@@ -36,26 +36,10 @@
                     printf("");
                     
                    }else{
-                    $indiceTabla = $_POST["tabla"];
-                    
 
-                    switch($indiceTabla){
-                        case '0':
-                            consulta(0);
-                            break;
-                        case '1':
-                            consulta(1);
-                            break;
-                        case '2':
-                            consulta(2);
-                        break;
-                        case '3':
-                            consulta(3);
-                        break;
-                        case '4':
-                            consulta(4);
-                        break;
-                    }
+                    $indiceTabla = $_POST["tabla"];
+                    consulta($indiceTabla);
+                    
                    } 
                    
 /* SEGÚN EL FORMULARIO QUE SE HA RELLENADO SE MUESTRA, SI NO SE HA RELLENADO NO SE MUESTRA HASTA QUE SE RELLENE */

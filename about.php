@@ -13,7 +13,7 @@
     <img src="images/EntidadRelacion.png" alt="Modelo entidad relación" id="ER">
 </div>
 <br>
-<p>Puedes descargar el código de esta web a través de mi <a href="#">Github.</a> <br>
+<p>Puedes descargar el código de esta web a través de mi <a href="https://github.com/samuelcg49/MySQL-Access" target="_blank">Github.</a> <br>
 Si quieres más información sobre esta BDD puedes descargar la <a href="documentacion\Documentacion.pdf" target="_blank">Documentación</a> en pdf para consultarla y conocer el proceso que ha llevado desarrollar esta BDD.</p>
 
 
