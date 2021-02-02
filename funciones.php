@@ -1,5 +1,8 @@
 <?php
-
+define('DB_SERVER','localhost'); 
+define('DB_NAME','usuariosdisco'); 
+define('DB_USER','root'); 
+define('DB_PASS','Fedoce.1'); 
 /********************* FUNCIÓN DE CONSULTA ********************************/
 /******************************************************************************************************/
 
@@ -68,7 +71,7 @@ function procesa($indiceTabla){
         $ordenacion = $_POST["ordenacion"];
     }
 
-    $conexion = mysqli_connect("localhost","web","root","disco");
+    $conexion = mysqli_connect(DB_SERVER,DB_USER,DB_PASS,"disco");
     
     if(mysqli_connect_errno()){
         printf("
@@ -112,5 +115,88 @@ function procesa($indiceTabla){
         }
     printf("</table>");
 }
+
+/******************************************************************************************************************/
+/********************************************** FUNCIÓN DE REGISTRO ***********************************************/
+
+function registro($usuario, $contrasena, $email, $ape1, $ape2, $repite){
+    
+    if($contrasena != $repite){
+        if(isset($_SESSION["error_repite"])){
+            session_unset($_SESSION["error_repite"]); 
+        }else{
+            
+            $_SESSION["error_repite"] = "Las contraseñas no coinciden";
+            header("Location: registro.php");
+        }
+    }else{
+    
+        $conexion = mysqli_connect(DB_SERVER,DB_USER,DB_PASS,DB_NAME); 
+        
+        $consulta = mysqli_query($conexion, "SELECT * FROM usuarios WHERE nombre = '$usuario'" );
+        $consulta2 = mysqli_query($conexion, "SELECT * FROM usuarios WHERE email = '$email' ");
+        
+        $encriptada = password_hash($contrasena, PASSWORD_DEFAULT, ['cost' => 4]);
+        
+        if (mysqli_num_rows($consulta) > 0 && mysqli_num_rows($consulta2) > 0){
+            
+            if(isset($_SESSION["error_registro"])){
+                session_unset($_SESSION["error_registro"]); 
+            }else{
+                
+                $_SESSION["error_registro"] = "Este usuario ya ha sido registrado";
+                header("Location: registro.php");
+            }
+
+        }else{
+            if(isset($_SESSION["success_registro"])){
+                session_unset($_SESSION["success_registro"]); 
+
+            }else{
+                $sql = "INSERT INTO usuarios (nombre,contrasena,email,ape1,ape2) VALUES ('$usuario','$encriptada','$email','$ape1','$ape2')"; 
+                mysqli_query($conexion, $sql); 
+
+                $_SESSION["success_registro"] = "SE HA REGISTRADO CON ÉXTIO";
+                header("Location: registro.php");  
+            }
+        }
+    }
+}
+
+function login ($usuario, $contrasena){
+    
+
+    $conexion = mysqli_connect(DB_SERVER,DB_USER,DB_PASS,DB_NAME); 
+    
+    $consulta = mysqli_query($conexion, "SELECT * FROM usuarios WHERE nombre = '$usuario' OR email = '$usuario' ");
+    
+    if ($consulta && mysqli_num_rows($consulta) == 1){
+
+        $datosUser = mysqli_fetch_assoc($consulta);
+        
+            if(password_verify($contrasena, $datosUser['contrasena'])){
+
+                $_SESSION["Usuario_logueado"] = $datosUser['nombre'];
+
+                if(isset($SESSION["error_login"])){
+                    session_unset($_SESSION["error_login"]);
+                }
+
+                header("Location: consulta.php");
+
+            }else{
+                $_SESSION["error_login"] = "Usuario o Contraseña erróneos";
+                header("Location: login.php");
+            }
+
+    }else{
+        
+        $_SESSION["error_login"] = "Usuario o Contraseña erróneos";
+        header("Location: login.php");
+    }
+
+}
+
+
 
 ?>
