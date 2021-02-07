@@ -2,7 +2,7 @@
 define('DB_SERVER','localhost'); 
 define('DB_NAME','usuariosdisco'); 
 define('DB_USER','root'); 
-define('DB_PASS','Fedoce.1'); 
+define('DB_PASS','napoleon1'); 
 /********************* FUNCIÓN DE CONSULTA ********************************/
 /******************************************************************************************************/
 
@@ -163,6 +163,9 @@ function registro($usuario, $contrasena, $email, $ape1, $ape2, $repite){
     }
 }
 
+/******************************************************************************************************************/
+/********************************************** FUNCIÓN DE LOGIN ***********************************************/
+
 function login ($usuario, $contrasena){
     
 
@@ -197,6 +200,87 @@ function login ($usuario, $contrasena){
 
 }
 
+/******************************************************************************************************************/
+/******************************************* FUNCIÓN DE AGREGAR DATOS *********************************************/
+
+function agregar($indiceTabla){
+    require("./comun.php");
+    $tabla = $tablas[1][$indiceTabla];
+
+        printf("<div class='agregar'>");
+            printf("<form action='?agregaDatos' method='POST'>");
+                printf("<div class='wrapper'>");
+                for($i = 0; $i < count($$tabla[0]); $i++){
+                    
+                    printf("<p>");
+                    printf('<label for="columna"> %s ',$$tabla[1][$i]);
+                        if($tabla == "tcantante" || $tabla == "tcomponente"){
+                            if($tcantante[0][$i] != "APE2" && $tcantante[0][$i] != "NOM_ARTISTICO" || $tcomponente[0][$i] != "APE2" && $tcomponente[0][$i] != "NACIMIENTO"){
+                                printf('<sup class="rojo">*</sup>');
+                            }
+                        }else{
+                            printf('<sup class="rojo">*</sup>');
+                        }
+                            
+                    printf('</label>');
+                    printf("<br>");
+                    printf('<input type="text" name="columna[]" id="columna"');  
+                        if($tabla == "tcantante" || $tabla == "tcomponente"){
+                            if($tcantante[0][$i] != "APE2" && $tcantante[0][$i] != "NOM_ARTISTICO" || $tcomponente[0][$i] != "APE2" && $tcomponente[0][$i] != "NACIMIENTO"){
+                                printf('required');
+                            }
+                        }else{
+                            printf('required');
+                        }
+                    printf(">");
+                    printf("</p>");
+                                            
+                }
+                
+                printf('</div>');
+                printf("<input type='hidden' name='control' value='%s' selected>",$indiceTabla);
+                printf('<br><input type="submit" class="btn btn-primary" name="agregar" value="Agregar datos">');
+            printf('</form>');
+        printf('</div>');
+}
+
+function agregaDatos($indiceTabla){
+        include("./comun.php");
+        $tabla = $tablas[1][$indiceTabla];
+        
+        $columna = $_POST["columna"];
+        $valores = implode("', '", $columna);
+
+        $conexion = mysqli_connect(DB_SERVER,DB_USER,DB_PASS,"disco"); 
+        $vcodigo = mysqli_query($conexion, "SELECT * FROM $tabla");
+        $codigo = $vcodigo->num_rows;
+
+        if($tabla == "tdiscografica"){
+            $sql = "INSERT INTO $tabla VALUES('$valores')";    
+            mysqli_query($conexion,$sql);
+
+                if(isset($SESSION["agregado"])){
+                    session_unset($_SESSION["agregado"]);
+                }else{
+                    $_SESSION["agregado"] = "Se han agregado los datos correctamente.";
+                    header("Location: agregar.php");
+                }
+            
+        }else{
+            $sql = "INSERT INTO $tabla VALUES($codigo, '$valores')";
+            mysqli_query($conexion,$sql);
+
+                if(isset($SESSION["agregado"])){
+                    session_unset($_SESSION["agregado"]);
+                }else{
+                    $_SESSION["agregado"] = "Se han agregado los datos correctamente.";
+                    header("Location: agregar.php");
+                }
+            
+            
+        }        
+
+}
 
 
 ?>

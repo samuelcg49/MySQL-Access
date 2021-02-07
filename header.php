@@ -29,6 +29,9 @@
         if(!empty($_SESSION["Usuario_logueado"])){
           printf('
             <li class="nav-item active">
+            <a class="nav-link" href="agregar.php">Agregar Datos</a>
+            </li>
+            <li class="nav-item active">
             <a class="nav-link" href="consulta.php">Realizar Consulta</a>
             </li>
             <li class="nav-item active">

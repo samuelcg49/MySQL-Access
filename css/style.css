@@ -163,9 +163,25 @@ label{
     vertical-align: auto;
 }
 
-span.rojo{
+.agregar{
+    border: 2px solid #444444;
+    border-radius: 15px;
+    width: 700px;
+    padding: 50px;
+    box-shadow: 0 0 3px #333;
+    margin: 0px auto;
+}
+.agregar .wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.rojo{
     color: red;
 }
+
 
 /** FOOTER ***/
 footer{

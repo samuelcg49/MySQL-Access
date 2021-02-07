@@ -36,8 +36,11 @@
           <?php 
             printf('
             <li class="nav-item active">
-            <a class="nav-link" href="consulta.php">Realizar Consulta</a>
+            <a class="nav-link" href="agregar.php">Agregar Datos</a>
             </li>
+            <li class="nav-item active">
+            <a class="nav-link" href="consulta.php">Realizar Consulta</a>
+            </li>            
             <li class="nav-item active">
               <a class="nav-link btn text-white" href="Mi-Cuenta.php" style="background: #7952b3;"> <i class="fas fa-user-circle"></i>'); printf(" %s ",$_SESSION["Usuario_logueado"]); printf(' </a>
             </li>
@@ -56,7 +59,7 @@
 define('DB_SERVER','localhost'); 
 define('DB_NAME','usuariosdisco'); 
 define('DB_USER','root'); 
-define('DB_PASS','Fedoce.1'); 
+define('DB_PASS','napoleon1'); 
 
     $conexion = mysqli_connect(DB_SERVER,DB_USER,DB_PASS,DB_NAME); 
     $user = $_SESSION["Usuario_logueado"];
